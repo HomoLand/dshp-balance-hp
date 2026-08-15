@@ -1,0 +1,27 @@
+{
+  "name": "dshp-balance-hp",
+  "version": "1.0.0",
+  "description": "DeepSeek 余额 HP 血量条插件（DSH Web GUI）：勾玉(三国杀)/红心(Minecraft)/血球(暗黑)/守望条等皮肤，HP=当前余额，上限=余额+今日消耗。",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "src/",
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "deepseek",
+    "balance",
+    "hp",
+    "cordis",
+    "dsh",
+    "plugin",
+    "gui"
+  ],
+  "license": "MIT",
+  "dsh": {
+    "type": "plugin",
+    "kind": "web-client"
+  }
+}
