@@ -1,4 +1,4 @@
-# dshp-balance-hp · DeepSeek 余额血量条
+# dshp-balance-hp · DeepSeek 余额血量条（v1.0.1 静态插件）
 
 DSH Web GUI 的余额显示插件：把 DeepSeek 余额做成游戏式「HP 条」。
 
@@ -18,9 +18,30 @@ DSH Web GUI 的余额显示插件：把 DeepSeek 余额做成游戏式「HP 条�
 
 ## 安装
 
-本插件是 DSH 动态 Cordis 插件（客户端 + 宿主半区）。两种安装方式：
+### A. 静态安装（推荐，与其他插件一致）
 
-### A. 动态安装（推荐，适用于本机 / 任意 DSH 实例）
+本包是标准 DSH 双半区插件包：宿主半区为 `TypertRemoteService`（`lib/host.js`），
+客户端半区为 `window.__ModuleLoader__` bundle（`lib/client.js`），
+自带组合补丁 `cordis.patch.yml`（安装即注入 `- id: dshp-balance-hp` 行）。
+
+安装步骤（以 `profiles/web` 为例）：
+
+```bash
+# 1. 把包放入 profile 的 node_modules
+mkdir -p /opt/dsh/profiles/web/node_modules/dshp-balance-hp
+cp -r package.json lib cordis.patch.yml /opt/dsh/profiles/web/node_modules/dshp-balance-hp/
+
+# 2. 把包名加入 profile 的 bundle 列表（package.json → dsh.profile.bundles）
+#    "dshp-balance-hp"
+
+# 3. 重启 Web 生效
+sudo systemctl restart dsh
+```
+
+依赖 `@deepseek-ai/dsh-typert-protocol` 从部署根向上解析（已随 DSH 安装）。
+若使用官方流程：`dsh plugin --profile web add dshp-balance-hp`（pnpm 转发）。
+
+### B. 动态安装（开发/调试用）
 
 在 DSH 会话中使用 `cordis_define` 创建插件，代码取自：
 
@@ -28,20 +49,6 @@ DSH Web GUI 的余额显示插件：把 DeepSeek 余额做成游戏式「HP 条�
 - Client 半区：`dist/client.raw.js`
 
 然后 `cordis_run` 激活（首次需在 Web 界面 Run 卡片授权）。
-
-### B. 静态挂载（Host 组合）
-
-将本包安装到部署可解析的位置（如 node_modules），然后在宿主组合补丁
-（部署的 `cordis.patch.yml`）中追加：
-
-```yaml
-- id: dshp-balance-hp
-  name: dshp-balance-hp
-```
-
-宿主 `apply(ctx)` 使用 `ctx.get('fs'|'shell'|'credentials'|'sandboxPolicy')` 与
-`harness.handle`，需在提供这些服务的宿主环境中运行；Web 客户端半区需由
-DSH Web 客户端运行器注入。
 
 ## 数据与安全
 
@@ -51,8 +58,9 @@ DSH Web 客户端运行器注入。
 
 ## 开发
 
-- `src/host.js` — 宿主半区（余额拉取、消耗累计、配置持久化、RPC 处理器）
-- `src/client.js` — 客户端半区（5 种皮肤、勾玉 SVG 路径、设置界面）
+- `lib/host.js` — 宿主半区（`BalanceGateway extends TypertRemoteService`，5 个 Remote 端点：get-state/refresh/set-today-base/clear-today-base/set-config；余额拉取、消耗累计、配置持久化）
+- `lib/client.js` — 客户端 bundle（`window.__ModuleLoader__.load`；5 种皮肤、勾玉 SVG 路径、设置界面、经 `ctx.remote.dshpBalance` 调宿主）
+- `src/`、`dist/` — 动态安装（调试）用源码与原文
 - 勾玉几何：标准太极半形（大圆 r45 + S 线两段 r22.5），鱼眼 r6.75 位于头部；
   基准姿态为镜像 + 顺时针 45°（S 线头/尾凸点同处 x=50 垂直线），默认再叠加 -10°。
 
