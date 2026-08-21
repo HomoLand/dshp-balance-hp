@@ -1,0 +1,7 @@
+# dshp-balance-hp bundle patch: inserts the dual-face plugin row into the web
+# profile roster. Applied as a profile bundle layer (the `dsh.bundle.patch`
+# manifest field). Host half = exports "." (BalanceGateway Typert service),
+# browser half = exports "./client" (ModuleLoader bundle).
+- insert:
+    - id: dshp-balance-hp
+      name: dshp-balance-hp
