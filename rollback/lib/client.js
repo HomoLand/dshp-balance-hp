@@ -15,7 +15,7 @@ window.__ModuleLoader__.load({
 			tag.textContent = css;
 			document.head.appendChild(tag);
 		}
-		const inject = ["slots", "remote"];
+		const inject = ["slots", "remote", "remote.dshpBalance"];
 		function apply(ctx) {
 
     const slots = ctx.slots
