@@ -34,7 +34,7 @@ s = s.replace(a, b, 1)
 # 3) access_control 增加 dsh-v6.maoyulong.club 规则
 anchor = "    - domain: dsh.maoyulong.club"
 assert anchor in s, "未找到 access_control 规则锚点"
-if "dsh-v6.maoyulong.club" not in s:
+if "    - domain: dsh-v6.maoyulong.club" not in s:
     newrule = '    - domain: dsh-v6.maoyulong.club\n      policy: two_factor\n      subject: "group:admins"'
     s = s.replace(anchor, anchor + "\n" + newrule, 1)
 
