@@ -6,6 +6,8 @@ DSH Web GUI 的余额显示插件：把 DeepSeek 余额做成游戏式「HP 条�
 - 每 5 分钟自动刷新，余额变化自动累计今日消耗（充值不计入）
 - 全部配置持久化到 DSH 工作区 `.dsh-balance-history.json`，重启不丢
 
+![效果图](assets/效果图.png)
+
 ## 皮肤（设置 → 余额血条）
 
 | 皮肤 | 样式 |
